@@ -1,0 +1,20 @@
+
+.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+a:hover{
+    color: brown;
+}
+
+.titulo {
+    background-color: rgb(206, 70, 70);
+    font-weight: bold;
+}
+
+h1 {
+    color: white;
+    font-size: 2em;
+}
+

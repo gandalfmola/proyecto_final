@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/pico.css">
+    <link rel="stylesheet" href="static/style.css">
+    <title>COMPRA</title>
+</head>
+<body>
+    <header class="titulo">
+        <h1>myCRYPTO</h1>
+    </header>
+
+    <main class="container">        
+
+        <div class="grid">
+            <div>
+                <a href="/">INICIO</a>
+            </div>
+            <div>
+                <a class="disabled" href="/compra">COMPRA</a>
+            </div>
+            <div>
+                <a href="/status">STATUS</a>
+            </div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>        
+        
+        <h1>COMPRA DE CRIPTOS</h1>
+
+        <form action="/compra" method="post">
+
+            {{ formulario.csrf_token }}
+
+        <div class="grid">  
+                                    
+            <div>
+                {{ formulario.moneda_from.label }}
+                {{ formulario.moneda_from }}
+            </div>            
+            
+            <div>
+                {{ formulario.moneda_to.label }}
+                {{ formulario.moneda_to }}                                    
+            </div> 
+            
+        </div>     
+
+        <div class="grid">            
+            
+            <div>                               
+                {{ formulario.cantidad.label }}
+                {{ formulario.cantidad(step=0.001, type="number") }}
+            </div>
+            
+
+            <div>
+                {{formulario.boton_calcular}}            
+            </div>
+
+            {% if compras %}
+            <div>
+                Compras: <p>{{compras}} </p><p>Vendes:</p>{{ vendes }}</p>
+            </div>
+            {% else %}
+            <div>
+                Compras: <p> </p><p>Vendes:</p> </p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="grid">
+            <div>
+                {{formulario.boton_comprar}}
+            </div>
+        </div>
+
+    </form>
+
+    </main>  
+
+        <footer class="titulo">
+            <p><strong>&copy2023 Jacobo</strong></p>
+        </footer>
+    
+</body>
+</html>

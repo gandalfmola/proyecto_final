@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/pico.css">
+    <link rel="stylesheet" href="static/style.css">
+    <title>PRINCIPAL</title>
+</head>
+
+<body>  
+    <header class="titulo">
+        <h1>myCRYPTO</h1>
+    </header>  
+
+    <main class="container">        
+
+    <div class="grid">
+        <div>
+            <a class="disabled" href="/">INICIO</a>
+        </div>
+        <div>
+            <a href="/compra">COMPRA</a>
+        </div>
+        <div>
+            <a href="/status">STATUS</a>
+        </div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <p></p>
+    
+    <h2>MOVIMIENTOS</h2>
+
+    {% if resumen %}
+    <table>
+        <tr>
+            <th><strong>Fecha de Compra</strong></th>
+            <th><strong>From</strong></th>            
+            <th><strong>Q</strong></th>
+            <th><strong>To</strong></th>
+            <th><strong>R</strong></th>
+            <th><strong>P.U.</strong></th>                   
+        </tr>
+        {% for posicion in resumen %}
+        <tr>
+            <td>{{posicion.moment}}</td>
+            <td>{{posicion.coin_from}}</td>            
+            <td>{{posicion.q}}</td>
+            <td>{{posicion.coin_to}}</td>
+            <td>{{posicion.r}}</td>
+            <td>{{posicion.value_u}}</td>                                
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <h5>Aún no tienes ninguna compra en tu cartera</h5>
+    {% endif %}    
+    
+    </main>   
+    
+    <footer class="titulo">
+        <p><strong>&copy2023 Jacobo</strong></p>
+    </footer>
+    
+</body>
+</html>

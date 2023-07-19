@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/pico.css">
+    <link rel="stylesheet" href="static/style.css">
+    <title>STATUS</title>
+</head>
+<body>
+    <header class="titulo">
+        <h1>myCRYPTO</h1>
+    </header>
+
+    <main class="container">
+
+        <div class="grid">
+            <div>
+                <a href="/">INICIO</a>
+            </div>
+            <div>
+                <a href="/compra">COMPRA</a>
+            </div>
+            <div>
+                <a class="disabled" href="/status">STATUS</a>
+            </div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <h1></h1>    
+
+        <table>
+            
+            {% if error %}
+            <p>ups... parece que hay un problema con el servidor, vuelve a cargar la página </p>
+            <p>{{error}}</p>
+
+
+            {% else %}   
+                <tr>
+                    <th><strong>Moneda</strong></th>
+                    <th><strong>Cantidad</strong></th>            
+                    <th><strong>Valor en euros</strong></th>
+                </tr>     
+
+            {% if resumen %}
+                {% for pares in resumen %}
+                <tr>
+                    <td>{{ pares[0] }}</td>
+                    <td>{{ pares[1] }}</td>
+                    <td>{{ pares[2] }}</td>
+                </tr>
+                {% endfor %}
+
+            {% else %}
+                <p>Aún no tienes posiciones en tu cartera</p>
+                
+            {% endif %}                        
+        </table>
+
+        <table>
+            <tr>
+                <th></th>
+                <th><strong>Valor actual</strong></th>
+                <th>{{ valor_act }}</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th><strong>Precio de compra</strong></th>
+                <th>{{ euros }}</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th><strong>Resultado de la inversión</strong></th>
+                <th>{{ resultado }}</th>
+            </tr>
+        </table>        
+
+        <footer>
+            <p>&copy2023 Jacobo</p>
+        </footer>
+
+        
+
+    </main>
+
+    <footer class="titulo">
+        <p><strong>&copy2023 Jacobo</strong></p>
+    </footer>
+
+    {% endif %}
+    
+</body>
+</html>
