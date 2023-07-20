@@ -26,13 +26,30 @@
             <div></div>
             <div></div>
             <div></div>
-        </div>        
+        </div>   
         
-        <h1>COMPRA DE CRIPTOS</h1>
+        {% with msgs = get_flashed_messages() %}
+            {% if msgs %}
+
+            <div class="container" id="msg-error">
+                {% for msg in msgs %}
+                    <p>{{ msg }}</p>
+                {% endfor %}
+            </div>
+
+            {% endif %}
+            {% endwith %}
+        
+        <h1></h1>
 
         <form action="/compra" method="post">
 
             {{ formulario.csrf_token }}
+
+            {{ formulario.hid1 }}
+            {{ formulario.hid2 }}
+            {{ formulario.hid3 }}
+            
 
         <div class="grid">  
                                     
@@ -72,14 +89,18 @@
         </div>
 
         {% if moneda_from and moneda_to%}
-        <div class="grid">
-            <div>
-                {{formulario.boton_comprar}}
+            
+            <div class="grid">
+                <div>
+                    {{formulario.boton_comprar}}
+                </div>
             </div>
-        </div>
+            
         {% else %}
 
         {% endif %}
+
+        
 
     </form>
 

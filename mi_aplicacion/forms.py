@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, SelectField, SubmitField
+from wtforms import StringField, FloatField, SelectField, SubmitField, HiddenField
 from wtforms.validators import DataRequired, Length
 
 
@@ -12,3 +12,6 @@ class MovementForm(FlaskForm):
     boton_calcular = SubmitField("Calcular")
     boton_comprar = SubmitField("Comprar")
 
+    hid1 = HiddenField()
+    hid2 = HiddenField()
+    hid3 = HiddenField()

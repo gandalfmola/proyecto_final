@@ -14,7 +14,7 @@ def my_consult(cripto):
     print(response.status_code, response.text)    
 
     count = 0
-    while response.status_code == 429 and count < 20:
+    while response.status_code == 429 and count < 150:
         response = requests.get(url)
         value = response.json()
         count += 1
@@ -160,7 +160,7 @@ def conversor(moneda_from, moneda_to, cantidad):
                         return cantidad, cambio
                     
                     else:
-                        return conv
+                        return conv, cambio
                 
                 # Por aquí viene si ha habido error en probatina
                 else:
