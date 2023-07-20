@@ -1,4 +1,3 @@
-apikey=F36C75E1-23E6-4A6E-9049-9345741ED24E
 
 https://rest.coinapi.io/v1/exchangerate/BTC/USD?apikey=F36C75E1-23E6-4A6E-9049-9345741ED24E
 

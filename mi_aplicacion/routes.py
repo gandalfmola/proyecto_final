@@ -18,14 +18,13 @@ def compra():
 
     # Lo primeros instanciamos el formulario
     form = MovementForm()
-    print("form es", form.data)
-    
+    print("form es", form.data)    
 
     # Si el método es GET entramos por aquí
     if request.method == "GET":
         return render_template("compra.html", formulario=form)
     
-    #Si el método es POST entramos por este else
+    # Si el método es POST entramos por este else
     else:        
         # Metemos en prueba el contenido del formulario que traemos de COMPRA.HTML
         prueba = form.data
@@ -44,163 +43,53 @@ def compra():
         boton_comprar = prueba["boton_comprar"]
         print("boton_comprar es", boton_comprar)
 
-        if cantidad == "":
-            cantidad = 0
 
-        # Vamos a implantar el if para la consulta:
+        # Por aquí viene la opción CALCULAR:
         if boton_calcular == True:
 
-            # OPCIÓN 1: UTILIZAMOS EUROS PARA COMPRAR UNA CRIPTO
-            if moneda_from == "EUR" and moneda_to != "EUR" and float(cantidad) > 0:
-                # Obtenemos el valor unitario en euros de la cripto seleccionada               
-                probatina,cambio = my_consult(moneda_to)
-                print("cambio es", cambio)
+            # Obtenemos la cantidad a comprar de moneda_from
+            resultado = conversor(moneda_from, moneda_to, cantidad)
+            print("resultado de calcular es", resultado)
+            print(type(resultado))
 
-                # Con probatina controlamos el error si el status_code no es un 200
-                if probatina == True:
-                    #cantidad = prueba["amount"]        
-                    print("cantidad es", cantidad)
-                    # Calculamos la conversión a la cripto según el nº de euros que hayamos introducido en Q:
-                    conv = exchange(cantidad, cambio)
-                    print("conv es", conv)
+            # Si da error lo mostramos por pantalla
+            if type(resultado[0]) == str:
+                return render_template("compra.html", formulario=form, vendes = "",compras=resultado)
 
-                    answer = 1
-
-                    return render_template("compra.html", formulario = form, compras=cantidad, vendes=conv)
+            # Si va bien devolvemos el cálculo y habilitamos botón comprar
+            else:
+                return render_template("compra.html", formulario=form, vendes = cantidad,compras=resultado, moneda_from=moneda_from, moneda_to=moneda_to)           
                 
-                # Por aquí viene si probatina ha dado error
-                else:
-                    answer = 0
-                    cantidad = cambio
-
-                    return render_template("compra.html", compra_option=answer, error=cantidad)
+        
+        # Aquí montamos la opción de COMPRAR:    
+        else:
+            # primero obtenemos el cálculo de moneda_from y el cambio unitario            
+            resultado,cambio = conversor(moneda_from, moneda_to, cantidad)
+            print("resultado de comprar es", resultado)
             
-            # OPCIÓN 2: TRADEO DE CRIPTOS
-            elif moneda_from != "EUR" and moneda_to != "EUR" and float(cantidad) > 0 and moneda_from != moneda_to:
-                # Obtenemos el valor unitario en euros de la primera cripto
-                probatina1,value_cr1 = my_consult(moneda_from)
-                # Obtenemos el valor unitario en euros de la segunda cripto
-                probatina2,value_cr2 = my_consult(moneda_to)
-
-                # Con probatina controlamos el error si el status_code no es un 200
-                if probatina1 == True and probatina2 == True:
-
-                    # Calculamos cuantas segundas criptos podemos comprar con la cantidad de las primeras elegidas
-                    cantidad = prueba["amount"]
-                    conv = exchange(float(cantidad)*float(value_cr1),value_cr2)
-                    # Comprobamos que tenemos suficiente saldo de esa cripto para hacer el tradeo
-                    saldo = saldos()
-                    print("saldo es", saldo[moneda_from])
-                    print("cantidad es", cantidad)
-
-                    answer = 1
-
-                    if float(cantidad) > saldo[moneda_from]:
-                        cantidad = "No tienes saldo suficiente para hacer esta compra"
-                        answer = 0
-                        print("answer es", answer)
-
-                    return render_template("compra.html", respuesta = conv, amount=cantidad, campo1=moneda_from, campo2=moneda_to, cambio=value_cr1, compra_option=answer)
-                
-                # Por aquí viene si ha habido error en probatina
-                elif probatina1 == False:
-                    answer = 0
-                    #cantidad = cambio
-
-                    return render_template("compra.html", compra_option=answer, error=value_cr1)
-                
-                # Por aquí viene si ha habido error en probatina
-                else:
-                    answer = 0
-                    #cantidad = cambio
-
-                    return render_template("compra.html", compra_option=answer, error=value_cr2)
+            # Si da error lo mostramos por pantalla
+            if type(resultado) != float:
+                return render_template("compra.html", formulario = form, compras=resultado, vendes="")
             
-            # OPCIÓN 3: RECUPERAMOS INVERSIÓN VENDIENDO UNA CRIPTO A CAMBIO DE EUROS
-            elif moneda_from != "EUR" and moneda_to == "EUR" and float(cantidad) > 0:
-                # Obtenemos el valor unitario en euros de la cripto seleccionada               
-                probatina, cambio = my_consult(prueba["campo1"])
-                print("cambio es", cambio)
+            elif type(cambio) != float:
+                return render_template("compra.html", formulario = form, compras=cambio, vendes="")
 
-                # Con probatina controlamos el error si el status_code no es un 200:
-                if probatina == True:
+            # Si va todo bien insertamos la compra en la base de datos
+            else:                             
+                # Creamos el objeto con el contenido del tipo de cripto y el valor
+                first_mov = create_inst(moment_calculate(),moneda_from, cantidad, moneda_to, resultado, cambio)
+                print(first_mov)
+                # Incluimos el nuevo objeto en la base de datos
+                insert_reg(first_mov)
 
-                    cantidad = prueba["amount"]        
-                    print("cantidad es", cantidad)            
-
-                    # Calculamos la conversión a la cripto según el nº de euros que hayamos introducido en Q:
-                    conv = exchange_eur(cantidad, cambio)
-
-                    # Comprobamos que tenemos suficiente saldo de esa cripto para hacer el tradeo
-                    saldo = saldos()
-                    print("saldo es", saldo[moneda_from])
-                    print("cantidad es", cantidad)
-
-                    answer = 1
-                    
-                    if float(cantidad) > saldo[moneda_from]:
-                        cantidad = "No tienes saldo suficiente para hacer esta compra"
-                        answer = 0
-                        print("answer es", answer)
-
-                    return render_template("compra.html", respuesta = conv, amount=cantidad, campo1=moneda_from, campo2=moneda_to, cambio=cambio, compra_option = answer)
-                
-                else:
-                    answer = 0
-                    cantidad = cambio
-
-                    return render_template("compra.html", compra_option=answer, amount=cantidad)               
-
-            
-            # OPCIONES 4 Y 5: SON UN CONTROL DE ERRORES PARA CANTIDAD O MONEDAS IGUALES        
-            elif moneda_from == moneda_to and float(cantidad) > 0:
-                cantidad = "Debes seleccionar dos monedas diferentes"
-                answer = 0
-
-                return render_template("compra.html", amount=cantidad, compra_option = answer)
-                    
-            elif float(cantidad) <= 0:
-                cantidad = "La cantidad selecionada no puede ser menor o igual a cero"
-                answer = 0
-
-                return render_template("compra.html", amount=cantidad, compra_option = answer)
-            
-        else:            
-            # Aquí montamos la opción de COMPRAR:
-            # Obtenemos el valor unitario en euros de la cripto seleccionada               
-            cambio = my_consult(moneda_to)
-            # Calculamos la conversión a la cripto según el nº de euros que hayamos introducido en Q:
-            conv = exchange(cantidad, cambio)
-            print("conv es", conv)
-            # Creamos el objeto con el contenido del tipo de cripto y el valor
-            first_mov = create_inst(moment_calculate(),moneda_from, cantidad, moneda_to, conv, cambio)
-            print(first_mov)
-            # Incluimos el nuevo objeto en la base de datos
-            insert_reg(first_mov)
-
-            return redirect("/")
-
-
-@app.route("/compra_realizada/<campo1>/<campo2>/<amount>/<respuesta>/<cambio>", methods=["GET", "POST"])
-def compra_realizada(campo1, campo2, amount, respuesta, cambio):
-    print("traemos campo1 ", campo1, "y campo2", campo2, "y amount ", amount)
-    data = request.form
-    print("data es", data)
-    # Creamos el objeto con el contenido del tipo de cripto y el valor
-    first_mov = create_inst(moment_calculate(),campo1, amount, campo2, respuesta, cambio)
-    print(first_mov)
-    # Incluimos el nuevo objeto en la base de datos
-    insert_reg(first_mov)
-
-    return redirect("/")
+                return redirect("/")            
 
 
 @app.route("/status")
 def status():
     # Obtenemos el saldo de cada una de nuestras criptos
-    mayor = saldos()
-    print("mayor es", mayor)
-
+    mayor = saldos()    
+    # Obtenemos la cantidad de euros enganchados
     balance_euros = mayor["EUR"]
     print("balance_euros es", balance_euros)
     # Obtenemos al valor actual de cada una de esas criptos

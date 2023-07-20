@@ -13,10 +13,16 @@ def my_consult(cripto):
     print("value es", value)   
     print(response.status_code, response.text)    
 
+    count = 0
+    while response.status_code == 429 and count < 20:
+        response = requests.get(url)
+        value = response.json()
+        count += 1
+
     if response.status_code == 200:
 
-        return True,value["rate"]
-    
+        return True,value["rate"]   
+ 
     else:
         return False,value["error"]
 
@@ -52,6 +58,131 @@ def exchange(coin1, coin2):
 
 def exchange_eur(cantidad, cambio):
     return float(cantidad)* float(cambio)
+
+
+def conversor(moneda_from, moneda_to, cantidad):
+            
+    # OPCIÓN 1: UTILIZAMOS EUROS PARA COMPRAR UNA CRIPTO
+            if moneda_from == "EUR" and moneda_to != "EUR" and float(cantidad) > 0:
+                # Obtenemos el valor unitario en euros de la cripto seleccionada               
+                probatina,cambio = my_consult(moneda_to)
+                print("cambio es", cambio)
+
+                # Con probatina controlamos el error si el status_code no es un 200
+                if probatina == True:
+                    #cantidad = prueba["amount"]        
+                    print("cantidad es", cantidad)
+                    # Calculamos la conversión a la cripto según el nº de euros que hayamos introducido en Q:
+                    conv = exchange(cantidad, cambio)
+                    print("conv es", conv)
+
+                    answer = 1
+
+                    return conv, cambio
+                
+                # Por aquí viene si probatina ha dado error
+                else:
+                    return cambio
+            
+            # OPCIÓN 2: TRADEO DE CRIPTOS
+            elif moneda_from != "EUR" and moneda_to != "EUR" and float(cantidad) > 0 and moneda_from != moneda_to:
+                # Obtenemos el valor unitario en euros de la primera cripto
+                probatina1,value_cr1 = my_consult(moneda_from)
+                # Obtenemos el valor unitario en euros de la segunda cripto
+                probatina2,value_cr2 = my_consult(moneda_to)
+                print("value_cr2 es", value_cr2)
+
+                # Con probatina controlamos el error si el status_code no es un 200
+                if probatina1 == True and probatina2 == True:
+
+                    # Calculamos cuantas segundas criptos podemos comprar con la cantidad de las primeras elegidas
+                    #cantidad = prueba["amount"]
+                    conv = exchange(float(cantidad)*float(value_cr1),value_cr2)
+
+                    # Comprobamos que tenemos suficiente saldo de esa cripto para hacer el tradeo
+                    saldo = saldos()
+                    print("saldo es", saldo[moneda_from])
+                    print("cantidad es", cantidad)
+
+                    answer = 1
+
+                    if float(cantidad) > saldo[moneda_from]:
+                        cantidad = "No tienes saldo suficiente para hacer esta compra"
+                        answer = 0
+                        print("answer es", answer)
+
+                        return cantidad
+                    
+                    else:
+                        return conv, value_cr2
+                
+                # Por aquí viene si ha habido error en probatina
+                elif probatina1 == False:
+                    answer = 0
+                    #cantidad = cambio
+
+                    return value_cr1
+                
+                # Por aquí viene si ha habido error en probatina
+                else:
+                    answer = 0
+                    #cantidad = cambio
+
+                    return value_cr2
+            
+            # OPCIÓN 3: RECUPERAMOS INVERSIÓN VENDIENDO UNA CRIPTO A CAMBIO DE EUROS
+            elif moneda_from != "EUR" and moneda_to == "EUR" and float(cantidad) > 0:
+                # Obtenemos el valor unitario en euros de la cripto seleccionada               
+                probatina, cambio = my_consult(moneda_from)
+                print("cambio es", cambio)
+
+                # Con probatina controlamos el error si el status_code no es un 200:
+                if probatina == True:
+
+                    #cantidad = prueba["amount"]        
+                    print("cantidad es", cantidad)            
+
+                    # Calculamos la conversión a la cripto según el nº de euros que hayamos introducido en Q:
+                    conv = exchange_eur(cantidad, cambio)
+
+                    # Comprobamos que tenemos suficiente saldo de esa cripto para hacer el tradeo
+                    saldo = saldos()
+                    print("saldo es", saldo[moneda_from])
+                    print("cantidad es", cantidad)
+
+                    answer = 1
+                    
+                    if float(cantidad) > saldo[moneda_from]:
+                        cantidad = "No tienes saldo suficiente para hacer esta compra"
+                        answer = 0
+                        print("answer es", answer)
+
+                        return cantidad, cambio
+                    
+                    else:
+                        return conv
+                
+                # Por aquí viene si ha habido error en probatina
+                else:
+                    answer = 0                   
+
+                    return cambio               
+
+            
+            # OPCIONES 4 Y 5: SON UN CONTROL DE ERRORES PARA CANTIDAD O MONEDAS IGUALES        
+            elif moneda_from == moneda_to and float(cantidad) > 0:
+                print("Por aquí pasa")
+                cantidad = "Debes seleccionar dos monedas diferentes"
+                resultado = ""
+                
+                return cantidad,resultado
+                    
+            elif float(cantidad) <= 0:
+                cantidad = "La cantidad selecionada no puede ser menor o igual a cero"
+                resultado = ""
+
+                return cantidad, resultado
+
 
 
 def create_inst(moment, coin_from,q, coin_to,r, value_u):

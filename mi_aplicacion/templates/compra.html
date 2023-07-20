@@ -71,11 +71,15 @@
             {% endif %}
         </div>
 
+        {% if moneda_from and moneda_to%}
         <div class="grid">
             <div>
                 {{formulario.boton_comprar}}
             </div>
         </div>
+        {% else %}
+
+        {% endif %}
 
     </form>
 
