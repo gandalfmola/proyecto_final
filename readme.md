@@ -1,24 +1,48 @@
+# Gestión de movimientos
+Prototipo de aplicación web realizada con flask sin seguridad ni gestión de usuarios.
+Permite registrar compras simuladas de criptomonedas de entre las siguientes
+- **_EUR_**, 		BTC,
+- ETH,		USDT,
+- BNB, 		XRP,
+- ADA, 		SOL,
+- DOT,		MATIC
 
-https://rest.coinapi.io/v1/exchangerate/BTC/USD?apikey=F36C75E1-23E6-4A6E-9049-9345741ED24E
+## Reglas básicas de la simulación de compra-venta
+1. Se parte de infinitos euros (siempre se pueden conseguir más trabajando)
+2. Sólo se puede vender una criptomoneda si se dispone de saldo de la misma. Se ha comprado anteriormente y aún no se ha vendido.
 
-# 1- Como poner los objetos de HTML en la misma línea, se hace con div class = grid, luego le metes divs dentro como si fueran celdas de esa fila, con una nuevo div class = grid metes la siguiente fila
+## Funcionalidad de la aplicación
+Tiene tres pantallas básicas.
+- Pantalla resumen con todos los movimientos realizados (sin paginación).
+- Pantalla de compra-venta de criptomonedas
+- Pantalla de estado de la inversión. Mostrará el dinero que representan las criptomonedas de las que aún tenemos saldo, su coste real en euros y su valor en euros al momento de realizar la consulta.
 
-# 2- Como hacer que la aplicación se adapte al tamaño de la pantalla
+## Instalación
 
-# 3- Explicar mejor la operativa de la página COMPRAS, el botón calculadora te saca por pantalla el cambio de x monedas del To por 1 moneda del from, el botón comprar hace la compra y lo manda a la base de datos y aparece en tu portafolio
+### Servicios externos
 
-   
-# Ruta para mirar todas las criptos
+Esta aplicación utiliza coinAPI.io como servicio para calcular el valor actual de cada cripto. Para hacerla funcionar es necesario obtener una apikey en [su web](https://www.coinapi.io/market-data-api/pricing)
 
-https://rest.coinapi.io/v1/exchangerate/EUR?apikey=F36C75E1-23E6-4A6E-9049-9345741ED24E
+### Paso a paso
 
-# Solucionar lo de la puta apikey que falla mas que una escopeta de feria, no está solucionado pero al menos están capturados los errores, falta que queden "bonitos" cuando se muestran
+1. Replicar el fichero `.env_template` y renombrarlo a `.env`
+2. Informar las siguientes claves:
+    - FLASK_APP: main.py (no cambiar)
+    - FLASK_DEBUG: debe ser False en entornos de producción, si vas a modificar la aplicación es más cómodo a True
+    - FLASK_SECRET_KEY: una clave secreta cualquiera. Un buen sitio para generarlas es [este](https://randomkeygen.com)
+    - FLASK_API_KEY: la apikey de coinApi.io obtenida más arriba
+    - FLASK_DB_PATH: Los movimientos se grabarán en un fichero sqlite. En esta clave pondremos su path y nombre... O dejar como está
 
-# Si que mola que se oculte el botón
+## Ejecución de la aplicación
+1. Instalar todas las dependencias. Escribir
+```
+pip install -r requirements.txt
+```
 
-# Falta meter el resto de criptos
-
-# Errores externos a controlar a mayores de la mierda de coin.api: se cae internt o se cae la base de datos(le cambias el nombre o la bloqueas con el journey)
+2. Lanzar la aplicación desde directorio donde esté instalada. Teclear
+```
+flask run
+```
 
 
 

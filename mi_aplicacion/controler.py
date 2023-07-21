@@ -111,7 +111,7 @@ def conversor(moneda_from, moneda_to, cantidad):
                         answer = 0
                         print("answer es", answer)
 
-                        return cantidad
+                        return cantidad, answer
                     
                     else:
                         return conv, value_cr2
@@ -248,10 +248,8 @@ def show():
         mov = Position(element[1], element[2], element[3], element[4],element[5], element[6])
         resumen.append(mov)
 
-    #print("resumen es ", resumen)
-    #print(resumen[0])
-
     return resumen
+
 
 def view_movements():
     listado = show()    

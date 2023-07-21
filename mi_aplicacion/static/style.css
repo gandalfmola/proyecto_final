@@ -18,3 +18,11 @@ h1 {
     font-size: 2em;
 }
 
+#msg-error {
+    text-align: center;
+    background-color: rgb(190, 209, 190);    
+}
+
+#mensaje {
+    color: red;
+}

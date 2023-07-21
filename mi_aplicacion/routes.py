@@ -24,29 +24,16 @@ def compra():
     if request.method == "GET":
         return render_template("compra.html", formulario=form)
     
+    
     # Si el método es POST entramos por este else
     else:        
         # Metemos en prueba el contenido del formulario que traemos de COMPRA.HTML
         prueba = form.data
         print("prueba es ", prueba)
         # Probamos a extraer de request.form cual de los botones fué pulsado
-        otra_prueba = request.form.get("Boton")        
-        # Declaramos las variables para los diferentes parámetros que vamos a utilizar
-        #moneda_from = prueba["moneda_from"]
-        #print("moneda_from es", moneda_from)
-        #moneda_to = prueba["moneda_to"]
-        #print("moneda_to es", moneda_to)
-        #cantidad = prueba["cantidad"]        
-        #print("cantidad es", cantidad)
-        boton_calcular = prueba["boton_calcular"]
-        print("boton_calcular es", boton_calcular)
-        boton_comprar = prueba["boton_comprar"]
-        print("boton_comprar es", boton_comprar)
-        # Probamos a meterle info al hidden
-        #form.hid1.data = moneda_from
-        #form.hid2.data = moneda_to
-        #form.hid3.data = cantidad
-        #print("prueba con cambio es", prueba)
+        otra_prueba = request.form.get("Boton")   
+        boton_calcular = prueba["boton_calcular"]        
+        boton_comprar = prueba["boton_comprar"]        
 
 
         # Por aquí viene la opción CALCULAR:
@@ -67,14 +54,16 @@ def compra():
 
             # Si da error lo mostramos por pantalla
             if type(resultado[0]) == str:
-                return render_template("compra.html", formulario=form, vendes = "",compras=resultado)
+                flash(resultado[0])
+                return render_template("compra.html", formulario=form, vendes = "",compras=" ")
 
             # Si va bien devolvemos el cálculo y habilitamos botón comprar
             else:                
                 return render_template("compra.html", formulario=form, vendes = cantidad,compras=resultado, moneda_from=moneda_from, moneda_to=moneda_to)           
                 
         
-        # Aquí montamos la opción de COMPRAR:    
+        # Aquí montamos la opción de COMPRAR:
+            
         else:
             # Intentamos proteger de los cambios en último momento
             #prueba = form.data
@@ -84,8 +73,8 @@ def compra():
             cantidad = prueba["cantidad"]
 
             if moneda_from != form.hid1.data or moneda_to != form.hid2.data or str(cantidad) != form.hid3.data:
-                print("SIN CAMBIOS CABRON")
-                flash("SIN CAMBIOS CABRON")
+                print("Has modificado datos, debes calcular antes de hacer la compra")
+                flash("Has modificado datos, debes calcular antes de hacer la compra")
                 return render_template("compra.html", formulario=form, moneda_from=moneda_from, moneda_to=moneda_to)
 
             else:

@@ -26,14 +26,16 @@
             <div></div>
             <div></div>
             <div></div>
-        </div>   
+        </div>  
+        
+        <h1></h1>
         
         {% with msgs = get_flashed_messages() %}
             {% if msgs %}
 
             <div class="container" id="msg-error">
                 {% for msg in msgs %}
-                    <p>{{ msg }}</p>
+                    <p id="mensaje">{{ msg }}</p>
                 {% endfor %}
             </div>
 
@@ -99,7 +101,6 @@
         {% else %}
 
         {% endif %}
-
         
 
     </form>
