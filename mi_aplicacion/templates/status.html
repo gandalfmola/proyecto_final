@@ -33,11 +33,25 @@
         <table>
             
             {% if error %}
-            <p>ups... parece que hay un problema con el servidor, vuelve a cargar la página </p>
+            
             <p>{{error}}</p>
 
 
             {% else %}   
+
+            {% with msgs = get_flashed_messages() %}
+            {% if msgs %}
+
+            <div class="container" id="msg-error">
+                {% for msg in msgs %}
+                    <p id="mensaje">{{ msg }}</p>
+                {% endfor %}
+            </div>
+
+            {% endif %}
+            {% endwith %}
+
+
                 <tr>
                     <th><strong>Moneda</strong></th>
                     <th><strong>Cantidad</strong></th>            

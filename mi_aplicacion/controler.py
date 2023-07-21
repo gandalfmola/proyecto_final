@@ -14,7 +14,7 @@ def my_consult(cripto):
     print(response.status_code, response.text)    
 
     count = 0
-    while response.status_code == 429 and count < 150:
+    while response.status_code == 429 and count < 5:
         response = requests.get(url)
         value = response.json()
         count += 1
@@ -82,7 +82,7 @@ def conversor(moneda_from, moneda_to, cantidad):
                 
                 # Por aquí viene si probatina ha dado error
                 else:
-                    return cambio
+                    return cambio, 
             
             # OPCIÓN 2: TRADEO DE CRIPTOS
             elif moneda_from != "EUR" and moneda_to != "EUR" and float(cantidad) > 0 and moneda_from != moneda_to:
@@ -116,19 +116,19 @@ def conversor(moneda_from, moneda_to, cantidad):
                     else:
                         return conv, value_cr2
                 
-                # Por aquí viene si ha habido error en probatina
+                # Por aquí viene si ha habido error en probatina1
                 elif probatina1 == False:
                     answer = 0
                     #cantidad = cambio
 
-                    return value_cr1
+                    return value_cr1, value_cr1
                 
-                # Por aquí viene si ha habido error en probatina
+                # Por aquí viene si ha habido error en probatina2
                 else:
                     answer = 0
                     #cantidad = cambio
 
-                    return value_cr2
+                    return value_cr2, value_cr2
             
             # OPCIÓN 3: RECUPERAMOS INVERSIÓN VENDIENDO UNA CRIPTO A CAMBIO DE EUROS
             elif moneda_from != "EUR" and moneda_to == "EUR" and float(cantidad) > 0:
@@ -166,7 +166,7 @@ def conversor(moneda_from, moneda_to, cantidad):
                 else:
                     answer = 0                   
 
-                    return cambio               
+                    return cambio, cambio               
 
             
             # OPCIONES 4 Y 5: SON UN CONTROL DE ERRORES PARA CANTIDAD O MONEDAS IGUALES        

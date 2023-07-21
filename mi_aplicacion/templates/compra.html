@@ -27,6 +27,13 @@
             <div></div>
             <div></div>
         </div>  
+
+        {% if error %}
+
+        <p></p>
+        {{ error }}
+
+        {% else %}
         
         <h1></h1>
         
@@ -104,7 +111,7 @@
         
 
     </form>
-
+        {% endif %}
     </main>  
 
         <footer class="titulo">

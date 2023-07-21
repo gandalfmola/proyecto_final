@@ -29,6 +29,14 @@
         <div></div>
     </div>
 
+    {% if error %}
+
+    <p></p>
+    {{ error }}
+
+    {% else %}
+           
+
     <p></p>
     
     <h2>MOVIMIENTOS</h2>
@@ -56,9 +64,13 @@
     </table>
     {% else %}
     <h5>Aún no tienes ninguna compra en tu cartera</h5>
-    {% endif %}    
+    {% endif %} 
     
-    </main>   
+    {% endif %}
+    
+    </main>  
+    
+    
     
     <footer class="titulo">
         <p><strong>&copy2023 Jacobo</strong></p>
