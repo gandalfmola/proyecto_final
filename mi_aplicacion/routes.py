@@ -71,7 +71,7 @@ def compra():
 
                 # Si va bien devolvemos el cálculo y habilitamos botón comprar
                 else:                
-                    return render_template("compra.html", formulario=form, vendes = cantidad,compras=resultado, moneda_from=moneda_from, moneda_to=moneda_to)           
+                    return render_template("compra.html", formulario=form, vendes = cantidad,compras=resultado[0], moneda_from=moneda_from, moneda_to=moneda_to)           
                     
             
             # Aquí montamos la opción de COMPRAR:
@@ -137,7 +137,7 @@ def status():
 
         # Vamos a intentar capturar el posible error de la API en la consulta
         
-        probatina,valores = my_global_consult(claves)
+        probatina,valores = my_global_consult(claves, apikey)
         if probatina == True:       
     
             # Aplicamos al saldo de cada cripto su valor actual en euros
@@ -168,18 +168,30 @@ def status():
                 valor_criptos += element[2]    
 
             # Calculamos el resultado de la inversion
-            res_inv = valor_criptos + balance_euros    
+            res_inv = valor_criptos + balance_euros   
+
+            # Según el resultado positivo o negativo le damos un valor
+            if res_inv > 0:
+                color = 1
+            elif res_inv < 0:
+                color = 2
+            else:
+                color = 3 
+
+            # Por si aún no hay inversiones
+            if valor_criptos == 0 and balance_euros == 0:
+                tabla_final = []
 
             print("tabla final es", tabla_final)
 
-            return render_template("status.html", resumen = tabla_final, euros=balance_euros, valor_act = valor_criptos, resultado = res_inv)
+            return render_template("status.html", resumen = tabla_final, euros=balance_euros, valor_act = valor_criptos, resultado = res_inv, color=color)
         
         else:
             flash(valores)
             return render_template("status.html", resumen = " ")
         
     except:
-        return render_template("index.html", error= "Ups...arece que hay problemas para cargar la página correctamente")
+        return render_template("status.html", error= "Ups...arece que hay problemas para cargar la página correctamente")
     
 
 @app.route("/prueba")

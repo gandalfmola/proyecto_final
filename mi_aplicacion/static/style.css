@@ -20,13 +20,26 @@ h1 {
 
 #msg-error {
     text-align: center;
-    background-color: rgb(193, 204, 219);    
+    background-color: rgb(30, 243, 41);    
 }
 
 #mensaje {
-    color: red;
+    color: rgb(236, 81, 81);
 }
 
 .copy {
     color: white;
+}
+
+#rojo {
+    color: red;
+}
+
+#verde {
+    color: rgb(8, 182, 8);
+}
+
+#menu {
+    font-weight: bold;
+    font-size: 1.2em;
 }

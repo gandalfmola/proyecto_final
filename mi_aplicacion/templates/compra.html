@@ -18,7 +18,7 @@
                 <a href="/">INICIO</a>
             </div>
             <div>
-                <a class="disabled" href="/compra">COMPRA</a>
+                <a class="disabled" href="/compra" id="menu">COMPRA</a>
             </div>
             <div>
                 <a href="/status">STATUS</a>
@@ -88,11 +88,11 @@
 
             {% if compras %}
             <div>
-                Compras: <p>{{compras}} </p><p>Vendes:</p>{{ vendes }}</p>
+                Compras: <p>{{compras}} {{moneda_to}}</p>
             </div>
             {% else %}
             <div>
-                Compras: <p> </p><p>Vendes:</p> </p>
+                Compras: <p> </p>
             </div>
             {% endif %}
         </div>
@@ -115,7 +115,7 @@
     </main>  
 
         <footer class="titulo">
-            <p class="copy"><strong>&copy2023 Jacobo</strong></p>
+            <p class="copy"><strong>&copy2023 mycripto.com</strong></p>
         </footer>
     
 </body>

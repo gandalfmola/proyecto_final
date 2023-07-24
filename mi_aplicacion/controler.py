@@ -14,7 +14,7 @@ def my_consult(cripto, apikey):
     print(response.status_code, response.text)    
 
     count = 0
-    while response.status_code == 429 and count < 65:
+    while response.status_code == 429 and count < 125:
         response = requests.get(url)
         value = response.json()
         count += 1
@@ -27,8 +27,8 @@ def my_consult(cripto, apikey):
         return False,value["error"]
 
 
-def my_global_consult(list):
-    url = "https://rest.coinapi.io/v1/exchangerate/EUR?apikey=F36C75E1-23E6-4A6E-9049-9345741ED24E"
+def my_global_consult(list, apikey):
+    url = f"https://rest.coinapi.io/v1/exchangerate/EUR?apikey={apikey}"
     
     response = requests.get(url)
     value = response.json()
@@ -206,7 +206,7 @@ def saldos():
     connection = sqlite3.connect("data/registro.db")
     cur = connection.cursor()
 
-    criptos = ['EUR' ,'BTC', 'ETH', 'ADA', 'XRP', 'LTC']
+    criptos = ['EUR' ,'BTC', 'ETH', 'ADA', 'XRP', 'LTC', 'BNB', 'USDT', 'SOL', 'MATIC']
     saldos = {}
     for cripto in criptos:
         

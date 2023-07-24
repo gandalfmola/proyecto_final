@@ -32,6 +32,9 @@ Esta aplicación utiliza coinAPI.io como servicio para calcular el valor actual 
     - FLASK_SECRET_KEY: una clave secreta cualquiera. Un buen sitio para generarlas es [este](https://randomkeygen.com)
     - FLASK_API_KEY: la apikey de coinApi.io obtenida más arriba
     - FLASK_DB_PATH: Los movimientos se grabarán en un fichero sqlite. En esta clave pondremos su path y nombre... O dejar como está
+3. Aquí falta meter como crear la base de datos a capón
+
+
 
 ## Ejecución de la aplicación
 1. Instalar todas las dependencias. Escribir
