@@ -5,8 +5,8 @@ import datetime
 
 
 
-def my_consult(cripto):
-    apikey = "F36C75E1-23E6-4A6E-9049-9345741ED24E"
+def my_consult(cripto, apikey):
+    #apikey = "F36C75E1-23E6-4A6E-9049-9345741ED24E"
     url = f"https://rest.coinapi.io/v1/exchangerate/{cripto}/EUR?apikey={apikey}"
     response = requests.get(url)
     value = response.json()    
@@ -14,7 +14,7 @@ def my_consult(cripto):
     print(response.status_code, response.text)    
 
     count = 0
-    while response.status_code == 429 and count < 5:
+    while response.status_code == 429 and count < 65:
         response = requests.get(url)
         value = response.json()
         count += 1
@@ -60,12 +60,12 @@ def exchange_eur(cantidad, cambio):
     return float(cantidad)* float(cambio)
 
 
-def conversor(moneda_from, moneda_to, cantidad):
+def conversor(moneda_from, moneda_to, cantidad, apikey):
             
     # OPCIÓN 1: UTILIZAMOS EUROS PARA COMPRAR UNA CRIPTO
             if moneda_from == "EUR" and moneda_to != "EUR" and float(cantidad) > 0:
                 # Obtenemos el valor unitario en euros de la cripto seleccionada               
-                probatina,cambio = my_consult(moneda_to)
+                probatina,cambio = my_consult(moneda_to, apikey)
                 print("cambio es", cambio)
 
                 # Con probatina controlamos el error si el status_code no es un 200
@@ -87,9 +87,9 @@ def conversor(moneda_from, moneda_to, cantidad):
             # OPCIÓN 2: TRADEO DE CRIPTOS
             elif moneda_from != "EUR" and moneda_to != "EUR" and float(cantidad) > 0 and moneda_from != moneda_to:
                 # Obtenemos el valor unitario en euros de la primera cripto
-                probatina1,value_cr1 = my_consult(moneda_from)
+                probatina1,value_cr1 = my_consult(moneda_from, apikey)
                 # Obtenemos el valor unitario en euros de la segunda cripto
-                probatina2,value_cr2 = my_consult(moneda_to)
+                probatina2,value_cr2 = my_consult(moneda_to, apikey)
                 print("value_cr2 es", value_cr2)
 
                 # Con probatina controlamos el error si el status_code no es un 200
@@ -133,7 +133,7 @@ def conversor(moneda_from, moneda_to, cantidad):
             # OPCIÓN 3: RECUPERAMOS INVERSIÓN VENDIENDO UNA CRIPTO A CAMBIO DE EUROS
             elif moneda_from != "EUR" and moneda_to == "EUR" and float(cantidad) > 0:
                 # Obtenemos el valor unitario en euros de la cripto seleccionada               
-                probatina, cambio = my_consult(moneda_from)
+                probatina, cambio = my_consult(moneda_from, apikey)
                 print("cambio es", cambio)
 
                 # Con probatina controlamos el error si el status_code no es un 200:

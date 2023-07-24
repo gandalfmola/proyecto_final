@@ -4,6 +4,9 @@ from mi_aplicacion.controler import *
 from mi_aplicacion.forms import MovementForm
 
 
+apikey = app.config.get("API_KEY")
+
+
 @app.route("/")
 def index():
     try:              
@@ -20,6 +23,8 @@ def index():
 
 @app.route("/compra", methods=["GET", "POST"])
 def compra():
+    #apikey = app.config.get("API_KEY")
+    print("apikey es", apikey)
 
     try:
 
@@ -55,7 +60,7 @@ def compra():
                 form.hid3.data = cantidad
 
                 # Obtenemos la cantidad a comprar de moneda_from
-                resultado = conversor(moneda_from, moneda_to, cantidad)
+                resultado = conversor(moneda_from, moneda_to, cantidad, apikey)
                 print("resultado de calcular es", resultado)
                 print(type(resultado))
 
@@ -88,7 +93,7 @@ def compra():
                             
                     # primero obtenemos el cálculo de moneda_from y el cambio unitario 
                     print("datos antes de comprar", prueba)           
-                    resultado,cambio = conversor(moneda_from, moneda_to, cantidad)
+                    resultado,cambio = conversor(moneda_from, moneda_to, cantidad, apikey)
                     print("resultado de comprar es", resultado)                   
 
 
@@ -117,6 +122,8 @@ def compra():
 
 @app.route("/status")
 def status():
+
+    print("apikey es", apikey)
 
     try:
         # Obtenemos el saldo de cada una de nuestras criptos
