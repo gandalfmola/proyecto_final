@@ -10,9 +10,7 @@ apikey = app.config.get("API_KEY")
 @app.route("/")
 def index():
     try:              
-        print("saldos es", saldos())
-        print()
-
+            
         return render_template("index.html", resumen = show())
     
     except:
@@ -23,14 +21,11 @@ def index():
 
 @app.route("/compra", methods=["GET", "POST"])
 def compra():
-    #apikey = app.config.get("API_KEY")
-    print("apikey es", apikey)
-
+   
     try:
 
         # Lo primeros instanciamos el formulario
-        form = MovementForm()
-        print("form es", form.data)    
+        form = MovementForm()           
 
         # Si el método es GET entramos por aquí
         if request.method == "GET":
@@ -41,7 +36,7 @@ def compra():
         else:        
             # Metemos en prueba el contenido del formulario que traemos de COMPRA.HTML
             prueba = form.data
-            print("prueba es ", prueba)
+            
             # Probamos a extraer de request.form cual de los botones fué pulsado
             otra_prueba = request.form.get("Boton")   
             boton_calcular = prueba["boton_calcular"]        
@@ -60,9 +55,7 @@ def compra():
                 form.hid3.data = cantidad
 
                 # Obtenemos la cantidad a comprar de moneda_from
-                resultado = conversor(moneda_from, moneda_to, cantidad, apikey)
-                print("resultado de calcular es", resultado)
-                print(type(resultado))
+                resultado = conversor(moneda_from, moneda_to, cantidad, apikey)                
 
                 # Si da error lo mostramos por pantalla
                 if type(resultado[0]) == str:
@@ -77,25 +70,20 @@ def compra():
             # Aquí montamos la opción de COMPRAR:
                 
             else:
-                # Intentamos proteger de los cambios en último momento
-                #prueba = form.data
-                print("prueba ya en COMPRAR es ", prueba)
+                # Intentamos proteger de los cambios en último momento                
+                
                 moneda_from = prueba["moneda_from"]
                 moneda_to = prueba["moneda_to"]
                 cantidad = prueba["cantidad"]
 
-                if moneda_from != form.hid1.data or moneda_to != form.hid2.data or str(cantidad) != form.hid3.data:
-                    print("Has modificado datos, debes calcular antes de hacer la compra")
+                if moneda_from != form.hid1.data or moneda_to != form.hid2.data or str(cantidad) != form.hid3.data:                    
                     flash("Has modificado datos, debes calcular antes de hacer la compra")
                     return render_template("compra.html", formulario=form, moneda_from=moneda_from, moneda_to=moneda_to)
 
                 else:
                             
-                    # primero obtenemos el cálculo de moneda_from y el cambio unitario 
-                    print("datos antes de comprar", prueba)           
-                    resultado,cambio = conversor(moneda_from, moneda_to, cantidad, apikey)
-                    print("resultado de comprar es", resultado)                   
-
+                    # primero obtenemos el cálculo de moneda_from y el cambio unitario                                
+                    resultado,cambio = conversor(moneda_from, moneda_to, cantidad, apikey)                                     
 
                     # Si da error lo mostramos por pantalla
                     if type(resultado) != float:
@@ -110,7 +98,7 @@ def compra():
                     else:                             
                         # Creamos el objeto con el contenido del tipo de cripto y el valor
                         first_mov = create_inst(moment_calculate(),moneda_from, cantidad, moneda_to, resultado, cambio)
-                        print(first_mov)
+                        
                         # Incluimos el nuevo objeto en la base de datos
                         insert_reg(first_mov)
 
@@ -121,19 +109,15 @@ def compra():
 
 
 @app.route("/status")
-def status():
-
-    print("apikey es", apikey)
+def status():    
 
     try:
         # Obtenemos el saldo de cada una de nuestras criptos
         mayor = saldos()    
         # Obtenemos la cantidad de euros enganchados
-        balance_euros = mayor["EUR"]
-        print("balance_euros es", balance_euros)
+        balance_euros = mayor["EUR"]        
         # Obtenemos al valor actual de cada una de esas criptos
         claves = list(mayor.keys())
-        print(claves)
 
         # Vamos a intentar capturar el posible error de la API en la consulta
         
@@ -180,9 +164,7 @@ def status():
 
             # Por si aún no hay inversiones
             if valor_criptos == 0 and balance_euros == 0:
-                tabla_final = []
-
-            print("tabla final es", tabla_final)
+                tabla_final = []            
 
             return render_template("status.html", resumen = tabla_final, euros=balance_euros, valor_act = valor_criptos, resultado = res_inv, color=color)
         
@@ -194,10 +176,7 @@ def status():
         return render_template("status.html", error= "Ups...arece que hay problemas para cargar la página correctamente")
     
 
-@app.route("/prueba")
-def prueba():
 
-    return render_template("prueba.html")
 
 
 

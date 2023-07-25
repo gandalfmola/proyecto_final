@@ -5,8 +5,7 @@ import datetime
 
 
 
-def my_consult(cripto, apikey):
-    #apikey = "F36C75E1-23E6-4A6E-9049-9345741ED24E"
+def my_consult(cripto, apikey):    
     url = f"https://rest.coinapi.io/v1/exchangerate/{cripto}/EUR?apikey={apikey}"
     response = requests.get(url)
     value = response.json()    
@@ -14,7 +13,7 @@ def my_consult(cripto, apikey):
     print(response.status_code, response.text)    
 
     count = 0
-    while response.status_code == 429 and count < 125:
+    while response.status_code == 429 and count < 25:
         response = requests.get(url)
         value = response.json()
         count += 1
@@ -36,10 +35,8 @@ def my_global_consult(list, apikey):
 
     if response.status_code == 200:    
         probando = value["rates"]    
-        valores = []
-        print("list es", list)
+        valores = []       
         
-
         for clave in list:
 
             for element in probando:
@@ -65,18 +62,13 @@ def conversor(moneda_from, moneda_to, cantidad, apikey):
     # OPCIÓN 1: UTILIZAMOS EUROS PARA COMPRAR UNA CRIPTO
             if moneda_from == "EUR" and moneda_to != "EUR" and float(cantidad) > 0:
                 # Obtenemos el valor unitario en euros de la cripto seleccionada               
-                probatina,cambio = my_consult(moneda_to, apikey)
-                print("cambio es", cambio)
+                probatina,cambio = my_consult(moneda_to, apikey)                
 
                 # Con probatina controlamos el error si el status_code no es un 200
-                if probatina == True:
-                    #cantidad = prueba["amount"]        
-                    print("cantidad es", cantidad)
+                if probatina == True:                            
+                    
                     # Calculamos la conversión a la cripto según el nº de euros que hayamos introducido en Q:
-                    conv = exchange(cantidad, cambio)
-                    print("conv es", conv)
-
-                    answer = 1
+                    conv = exchange(cantidad, cambio)                   
 
                     return conv, cambio
                 
@@ -89,20 +81,16 @@ def conversor(moneda_from, moneda_to, cantidad, apikey):
                 # Obtenemos el valor unitario en euros de la primera cripto
                 probatina1,value_cr1 = my_consult(moneda_from, apikey)
                 # Obtenemos el valor unitario en euros de la segunda cripto
-                probatina2,value_cr2 = my_consult(moneda_to, apikey)
-                print("value_cr2 es", value_cr2)
+                probatina2,value_cr2 = my_consult(moneda_to, apikey)                
 
                 # Con probatina controlamos el error si el status_code no es un 200
                 if probatina1 == True and probatina2 == True:
 
-                    # Calculamos cuantas segundas criptos podemos comprar con la cantidad de las primeras elegidas
-                    #cantidad = prueba["amount"]
+                    # Calculamos cuantas segundas criptos podemos comprar con la cantidad de las primeras elegidas                    
                     conv = exchange(float(cantidad)*float(value_cr1),value_cr2)
 
                     # Comprobamos que tenemos suficiente saldo de esa cripto para hacer el tradeo
-                    saldo = saldos()
-                    print("saldo es", saldo[moneda_from])
-                    print("cantidad es", cantidad)
+                    saldo = saldos()                    
 
                     answer = 1
 
@@ -119,43 +107,34 @@ def conversor(moneda_from, moneda_to, cantidad, apikey):
                 # Por aquí viene si ha habido error en probatina1
                 elif probatina1 == False:
                     answer = 0
-                    #cantidad = cambio
-
+                    
                     return value_cr1, value_cr1
                 
                 # Por aquí viene si ha habido error en probatina2
                 else:
                     answer = 0
-                    #cantidad = cambio
-
+                    
                     return value_cr2, value_cr2
             
             # OPCIÓN 3: RECUPERAMOS INVERSIÓN VENDIENDO UNA CRIPTO A CAMBIO DE EUROS
             elif moneda_from != "EUR" and moneda_to == "EUR" and float(cantidad) > 0:
                 # Obtenemos el valor unitario en euros de la cripto seleccionada               
-                probatina, cambio = my_consult(moneda_from, apikey)
-                print("cambio es", cambio)
+                probatina, cambio = my_consult(moneda_from, apikey)                
 
                 # Con probatina controlamos el error si el status_code no es un 200:
-                if probatina == True:
-
-                    #cantidad = prueba["amount"]        
-                    print("cantidad es", cantidad)            
+                if probatina == True:           
 
                     # Calculamos la conversión a la cripto según el nº de euros que hayamos introducido en Q:
                     conv = exchange_eur(cantidad, cambio)
 
                     # Comprobamos que tenemos suficiente saldo de esa cripto para hacer el tradeo
-                    saldo = saldos()
-                    print("saldo es", saldo[moneda_from])
-                    print("cantidad es", cantidad)
+                    saldo = saldos()          
 
                     answer = 1
                     
                     if float(cantidad) > saldo[moneda_from]:
                         cantidad = "No tienes saldo suficiente para hacer esta compra"
-                        answer = 0
-                        print("answer es", answer)
+                        answer = 0                       
 
                         return cantidad, cambio
                     
@@ -170,8 +149,7 @@ def conversor(moneda_from, moneda_to, cantidad, apikey):
 
             
             # OPCIONES 4 Y 5: SON UN CONTROL DE ERRORES PARA CANTIDAD O MONEDAS IGUALES        
-            elif moneda_from == moneda_to and float(cantidad) > 0:
-                print("Por aquí pasa")
+            elif moneda_from == moneda_to and float(cantidad) > 0:                
                 cantidad = "Debes seleccionar dos monedas diferentes"
                 resultado = ""
                 
@@ -182,7 +160,6 @@ def conversor(moneda_from, moneda_to, cantidad, apikey):
                 resultado = ""
 
                 return cantidad, resultado
-
 
 
 def create_inst(moment, coin_from,q, coin_to,r, value_u):
@@ -197,10 +174,10 @@ def insert_reg(mov):
 
     query = """INSERT INTO registro (Fecha, Froome, Q, Too, R, PU) values(?, ?, ?, ?, ?, ?);"""
 
-    #unidades = 1
 
     cur.execute(query, (mov.moment, mov.coin_from, mov.q, mov.coin_to, mov.r, mov.value_u))
     connection.commit()
+    
 
 def saldos():
     connection = sqlite3.connect("data/registro.db")
@@ -225,11 +202,11 @@ def saldos():
 
     # Vamos a intentar sacar los saldos de las ventas
     for cripto in criptos:
-        #print(cripto)
+        
         query = """SELECT Q FROM registro WHERE Froome = (?) """
         cur.execute(query, (cripto,))
         sumatorio = cur.fetchall()
-        #print("segundo sumatorio es", sumatorio)
+        
         if len(sumatorio) > 0:
             for saldo in sumatorio:
                 saldos[cripto] -= saldo[0]

@@ -14,17 +14,7 @@ class Position():
     def __str__(self):
         return f"Objeto Position {self.moment} {self.coin_from} {self.q} {self.coin_to} {self.r} {self.value_u}"
 
-''' 
-    def actual_value(self):
-        apikey = "F36C75E1-23E6-4A6E-9049-9345741ED24E"
-        url = f"https://rest.coinapi.io/v1/exchangerate/{self.coin}/EUR?apikey={apikey}"
-        response = requests.get(url)
-        value = response.json()
-        print("value del método es", value)   
-        print(response.status_code, response.text)    
 
-        return value["rate"]*self.number
-'''
     
 
     

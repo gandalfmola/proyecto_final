@@ -18,6 +18,10 @@ h1 {
     font-size: 2em;
 }
 
+h2 {
+    font-style:initial
+}
+
 #msg-error {
     text-align: center;
     background-color: rgb(30, 243, 41);    
@@ -42,4 +46,12 @@ h1 {
 #menu {
     font-weight: bold;
     font-size: 1.2em;
+    color: rgb(206, 70, 70);
+}
+
+#cabecera {
+    background-color: rgb(206, 70, 70);
+}
+#campos {
+    color: white;
 }

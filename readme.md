@@ -1,11 +1,12 @@
 # Gestión de movimientos
 Prototipo de aplicación web realizada con flask sin seguridad ni gestión de usuarios.
 Permite registrar compras simuladas de criptomonedas de entre las siguientes
-- **_EUR_**, 		BTC,
+- EUR(divisa)
+- BTC,      LTC,
 - ETH,		USDT,
 - BNB, 		XRP,
 - ADA, 		SOL,
-- DOT,		MATIC
+- MATIC,
 
 ## Reglas básicas de la simulación de compra-venta
 1. Se parte de infinitos euros (siempre se pueden conseguir más trabajando)
@@ -14,7 +15,7 @@ Permite registrar compras simuladas de criptomonedas de entre las siguientes
 ## Funcionalidad de la aplicación
 Tiene tres pantallas básicas.
 - Pantalla resumen con todos los movimientos realizados (sin paginación).
-- Pantalla de compra-venta de criptomonedas
+- Pantalla de compra-venta de criptomonedas, cada vez que realicemos una compra-venta nos llevará a la página resumen para ver como se ha añadido la nueva operación que acabmos de realizar
 - Pantalla de estado de la inversión. Mostrará el dinero que representan las criptomonedas de las que aún tenemos saldo, su coste real en euros y su valor en euros al momento de realizar la consulta.
 
 ## Instalación
@@ -26,13 +27,14 @@ Esta aplicación utiliza coinAPI.io como servicio para calcular el valor actual 
 ### Paso a paso
 
 1. Replicar el fichero `.env_template` y renombrarlo a `.env`
+
 2. Informar las siguientes claves:
     - FLASK_APP: main.py (no cambiar)
     - FLASK_DEBUG: debe ser False en entornos de producción, si vas a modificar la aplicación es más cómodo a True
     - FLASK_SECRET_KEY: una clave secreta cualquiera. Un buen sitio para generarlas es [este](https://randomkeygen.com)
     - FLASK_API_KEY: la apikey de coinApi.io obtenida más arriba
-    - FLASK_DB_PATH: Los movimientos se grabarán en un fichero sqlite. En esta clave pondremos su path y nombre... O dejar como está
-3. Aquí falta meter como crear la base de datos a capón
+
+3. Ejecutar el archivo creadb.py para crear la base de datos en la que se irán volcando la operaciones de compra y tradeo
 
 
 

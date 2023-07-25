@@ -55,10 +55,10 @@
     
 
             {% if resumen %}
-            <tr>
-                <th><strong>Moneda</strong></th>
-                <th><strong>Cantidad</strong></th>            
-                <th><strong>Valor en euros</strong></th>
+            <tr id="cabecera">
+                <th id="campos"><strong>Moneda</strong></th>
+                <th id="campos"><strong>Cantidad</strong></th>            
+                <th id="campos"><strong>Valor en euros</strong></th>
             </tr>
                 {% for pares in resumen %}
                 {% if pares[1] %}
@@ -112,7 +112,7 @@
     </main>
 
     <footer class="titulo">
-        <p class="copy"><strong>&copy2023 mycrypto.com</strong></p>
+        <p class="copy"><strong>&copy2023 - Todos los derechos reservados</strong></p>
     </footer>
 
     {% endif %}
