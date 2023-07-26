@@ -166,7 +166,7 @@ def status():
             if valor_criptos == 0 and balance_euros == 0:
                 tabla_final = []            
 
-            return render_template("status.html", resumen = tabla_final, euros=balance_euros, valor_act = valor_criptos, resultado = res_inv, color=color)
+            return render_template("status.html", resumen = tabla_final, euros=round(balance_euros,2), valor_act = round(valor_criptos,2), resultado = round(res_inv,2), color=color)
         
         else:
             flash(valores)

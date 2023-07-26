@@ -80,30 +80,30 @@
             <tr>
                 <th></th>
                 <th><strong>Valor actual</strong></th>
-                <th>{{ valor_act }}</th>
+                <th>{{ valor_act }} €</th>
             </tr>
             <tr>
                 <th></th>
                 <th><strong>Precio de compra</strong></th>
-                <th>{{ euros }}</th>
+                <th>{{ euros }} €</th>
             </tr>
             {% if color == 1 %}
             <tr>
                 <th></th>
                 <th><strong>Resultado de la inversión</strong></th>
-                <th id="verde">{{ resultado }}</th>
+                <th id="verde">{{ resultado }} €</th>
             </tr>
             {% elif color == 2 %}
             <tr>
                 <th></th>
                 <th><strong>Resultado de la inversión</strong></th>
-                <th id="rojo">{{ resultado }}</th>
+                <th id="rojo">{{ resultado }} €</th>
             </tr>
             {% else %}
             <tr>
                 <th></th>
                 <th><strong>Resultado de la inversión</strong></th>
-                <th>{{ resultado }}</th>
+                <th>{{ resultado }} €</th>
             </tr>
             {% endif %}   
         </table>    

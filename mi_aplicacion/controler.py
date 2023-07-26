@@ -13,7 +13,7 @@ def my_consult(cripto, apikey):
     print(response.status_code, response.text)    
 
     count = 0
-    while response.status_code == 429 and count < 125:
+    while response.status_code == 429 and count < 25:
         response = requests.get(url)
         value = response.json()
         count += 1
