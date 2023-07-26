@@ -13,7 +13,7 @@ def my_consult(cripto, apikey):
     print(response.status_code, response.text)    
 
     count = 0
-    while response.status_code == 429 and count < 25:
+    while response.status_code == 429 and count < 125:
         response = requests.get(url)
         value = response.json()
         count += 1
@@ -183,7 +183,7 @@ def saldos():
     connection = sqlite3.connect("data/registro.db")
     cur = connection.cursor()
 
-    criptos = ['EUR' ,'BTC', 'ETH', 'ADA', 'XRP', 'LTC', 'BNB', 'USDT', 'SOL', 'MATIC']
+    criptos = ['EUR' ,'BTC', 'ETH', 'ADA', 'XRP', 'LTC', 'BNB', 'USDT', 'SOL', 'MATIC', 'DOT']
     saldos = {}
     for cripto in criptos:
         

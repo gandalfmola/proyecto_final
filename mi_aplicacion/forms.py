@@ -5,8 +5,8 @@ from wtforms.validators import DataRequired, Length
 
 
 class MovementForm(FlaskForm):
-    moneda_from = SelectField("From", validators=[DataRequired("Campo obligatorio")], choices=["EUR", "BTC", "ETH", "ADA", "XRP", "LTC", "BNB", "USDT", "SOL", "MATIC"])
-    moneda_to = SelectField("From", validators=[DataRequired("Campo obligatorio")], choices=["EUR", "BTC", "ETH", "ADA", "XRP", "LTC", "BNB", "USDT", "SOL", "MATIC"])
+    moneda_from = SelectField("From", validators=[DataRequired("Campo obligatorio")], choices=["EUR", "BTC", "ETH", "ADA", "XRP", "LTC", "BNB", "USDT", "SOL", "MATIC", "DOT"])
+    moneda_to = SelectField("From", validators=[DataRequired("Campo obligatorio")], choices=["EUR", "BTC", "ETH", "ADA", "XRP", "LTC", "BNB", "USDT", "SOL", "MATIC", "DOT"])
     cantidad = FloatField("Cantidad", validators=[DataRequired("Este campo es obligatorio")])
 
     boton_calcular = SubmitField("Calcular")

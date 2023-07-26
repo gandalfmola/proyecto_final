@@ -6,7 +6,7 @@ Permite registrar compras simuladas de criptomonedas de entre las siguientes
 - ETH,		USDT,
 - BNB, 		XRP,
 - ADA, 		SOL,
-- MATIC,
+- MATIC,    DOT,
 
 ## Reglas básicas de la simulación de compra-venta
 1. Se parte de infinitos euros (siempre se pueden conseguir más trabajando)

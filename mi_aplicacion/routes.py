@@ -15,7 +15,7 @@ def index():
     
     except:
         
-        return render_template("index.html", error= "Ups...arece que hay problemas para cargar la página correctamente")     
+        return render_template("index.html", error= "Ups.. parece que hay problemas para cargar la página correctamente")     
     
 
 
@@ -105,7 +105,7 @@ def compra():
                         return redirect("/")   
                              
     except:   
-        return render_template("compra.html", formulario=form,error= "Ups...arece que hay problemas para cargar la página correctamente")
+        return render_template("compra.html", formulario=form,error= "Ups.. parece que hay problemas para cargar la página correctamente")
 
 
 @app.route("/status")
@@ -173,7 +173,7 @@ def status():
             return render_template("status.html", resumen = " ")
         
     except:
-        return render_template("status.html", error= "Ups...arece que hay problemas para cargar la página correctamente")
+        return render_template("status.html", error= "Ups.. parece que hay problemas para cargar la página correctamente")
     
 
 
